@@ -1,0 +1,21 @@
+// {type:deployment}
+// {generate:true}
+
+[Arrival Data]-[Airport]
+[Departure Data]-[Airport]
+[Airport]-[Api (FlightAware)]
+[Country]-[Departure Data]
+[Country]-[Arrival Data]
+[Api (FlightAware)]-[Processor]
+[Cache]-[Processor]
+[Cache]-[note: To preserve calls and processed data{bg:cornsilk}]
+[Processor]-[note: Functions which calculate and other things using language libary{bg:cornsilk}]
+[Processor]-[Language/country (libary)]
+[Processor]-[note: Create Table for each language corresponding to their time of arrival which will then be cached{bg:cornsilk}]
+
+[Rest API]-[Cache]
+[Web page]-[Rest API]
+[Web socket]-[Cache]
+[Web page]-[Web socket]
+[Rest API]-[note: Current state of the API{bg:cornsilk}]
+[Web socket]-[note: Feed of state changes{bg:cornsilk}]
