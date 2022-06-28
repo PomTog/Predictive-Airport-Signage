@@ -3,22 +3,35 @@ To create a table of the time of
 arrival and determine what language to 
 display by pulling from the API.
 """
-import enum
-from functools import cache
-from webbrowser import get
-from wsgiref import headers
 from pydantic import BaseModel, validate_arguments
 from typing import List, Dict, Optional
 from datetime import datetime
 import requests
-from redis import StrictRedis
 import redis
 import json
+import airportsdata
+import pycountry
+import collections
 
 client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 
 
 id="LHR"
+
+class SignageData(BaseModel):
+    """This is the signage data"""
+    gate_destination: Optional[str]
+    terminal_destination: Optional[str]
+    gate_origin: Optional[str]
+    status: str
+    estimated_in: Optional[datetime]
+    estimated_out: Optional[datetime]
+    destination_code_iata: Optional[str]
+    origin_code_iata: Optional[str]
+    country: pycountry.db.Country
+    language: pycountry.db.Language
+    airport: collections.OrderedDict
+
 
 class Arrival(BaseModel):
     """Its a model to represent arrival data from the FlightAware API"""
