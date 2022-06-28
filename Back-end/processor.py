@@ -12,10 +12,11 @@ from typing import List, Dict, Optional
 from datetime import datetime
 import requests
 from redis import StrictRedis
-from redis_cache import RedisCache
+import redis
+import json
 
-client = StrictRedis(host = "localhost", decode_responses=True)
-cache = RedisCache(redis_client=client)
+client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+
 
 id="LHR"
 
@@ -133,7 +134,6 @@ class Arrivals(BaseModel):
     num_pages: int
 
     @staticmethod
-    @cache.cache()
     def get():
         """pull request from api for arrivals"""
         response = requests.get(
@@ -142,7 +142,21 @@ class Arrivals(BaseModel):
                 "x-apikey":"hAUtREfKvazvRdYJu7NwAEpCklCkUvxt",
             }
         )
-        return Arrivals(**response.json()).dict()
+        return Arrivals(**response.json())
+
+    @staticmethod
+    def cached_get():
+        """cached request"""
+        data = client.get('processor:api:arrivals')
+        if data: 
+            return Arrivals(**json.loads(data))
+        
+        arrivals = Arrivals.get()
+        client.set(
+            'processor:api:arrivals',
+            arrivals.json()
+        )
+        return arrivals
 
 class Departures(BaseModel):
     """Its a model to represent departures data from the FlightAware API"""
@@ -152,7 +166,6 @@ class Departures(BaseModel):
     num_pages: int
 
     @staticmethod
-    @cache.cache()
     def get():
         """pull request from api for departures"""
         response = requests.get(
@@ -161,13 +174,27 @@ class Departures(BaseModel):
                 "x-apikey":"hAUtREfKvazvRdYJu7NwAEpCklCkUvxt",
             }
         )
-        return Departures(**response.json()).dict()
+        return Departures(**response.json())
+    
+    @staticmethod
+    def cached_get():
+        """cached request"""
+        data = client.get('processor:api:departures')
+        if data: 
+            return Departures(**json.loads(data))
+        
+        departures = Departures.get()
+        client.set(
+            'processor:api:departures',
+            departures.json()
+        )
+        return departures
 
 
 if __name__=="__main__":
 
-    scheduled_arrivals = Arrivals.get()
-    scheduled_departures = Departures.get()
+    arrivals = Arrivals.cached_get()
+    departures = Departures.cached_get()
     print("Done")
     breakpoint()
     
