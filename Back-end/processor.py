@@ -197,4 +197,3 @@ if __name__=="__main__":
     departures = Departures.cached_get()
     print("Done")
     breakpoint()
-    
