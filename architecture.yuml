@@ -15,7 +15,6 @@
 [Processor]-[Babel (libary)]
 [Processor]-[note: Create Table for each language corresponding to their time of arrival which will then be cached{bg:cornsilk}]
 
-
 [Rest API]-[Cache]
 [Web page]-[Rest API]
 [Web socket]-[Cache]

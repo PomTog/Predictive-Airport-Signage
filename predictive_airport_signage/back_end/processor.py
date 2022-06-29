@@ -350,6 +350,14 @@ class SignageDatas(BaseModel):
             f'signage:{self.arrivals_departures}',
             self.json()
         )
+    
+    @staticmethod
+    def get(arrivals_departures: str):
+        """get data from cache"""
+        data=client.get(
+            f'signage:{arrivals_departures}'
+        )
+        return SignageDatas(**json.loads(data))
 
 if __name__=="__main__":
 
