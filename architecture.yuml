@@ -10,8 +10,11 @@
 [Cache]-[Processor]
 [Cache]-[note: To preserve calls and processed data{bg:cornsilk}]
 [Processor]-[note: Functions which calculate and other things using language libary{bg:cornsilk}]
-[Processor]-[Language/country (libary)]
+[Processor]-[Pycountry (libary)]
+[Processor]-[Airportsdata (libary)]
+[Processor]-[Babel (libary)]
 [Processor]-[note: Create Table for each language corresponding to their time of arrival which will then be cached{bg:cornsilk}]
+
 
 [Rest API]-[Cache]
 [Web page]-[Rest API]

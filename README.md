@@ -150,7 +150,10 @@ We can use Pycountry (https://pypi.org/project/pycountry/) to find the associate
 This is our basic architecture for our project
 
 ![architecture](architecture.svg)
+![architecture](processing_logic.svg)
 
-The processor will retrieve data from the FlightAware API and use PyCountry to find the language of the departure country. This will then be cached for the next few hours of data (to limit API usage) and the language will be displayed accordingly at the corresponding time. The cache will the be used for displaying the result on a website using the RestAPI as the current info and updating it with the Web Socket.
+
+The processor will retrieve data from the FlightAware API and use PyCountry as well as Airportsdata to find the language of the departure/arrival country. This will then be cached for the next few hours of data (to limit API usage) and the language will be displayed accordingly at the corresponding time. The cache will the be used for displaying the result on a website using the RestAPI as the current info and updating it with the Web Socket.
 
 The processor, cache and API/Web Page will be deployed in docker containers, in order to make management scalability easier.
+
