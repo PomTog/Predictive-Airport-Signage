@@ -3,6 +3,8 @@ To create a table of the time of
 arrival and determine what language to 
 display by pulling from the API.
 """
+from itertools import count
+from unicodedata import numeric
 from pydantic import BaseModel, validate_arguments
 from typing import List, Dict, Optional, Any, Union
 from datetime import datetime
@@ -191,6 +193,40 @@ class Departures(BaseModel):
         )
         return departures
 
+class Airport(BaseModel):
+    """Class for airport data"""
+    
+    iata: str
+    name: str
+    city: str
+    subd: str
+    country: str
+    elevation: float
+    lat: float
+    lon: float
+    tz: str
+
+class Country(BaseModel):
+    """class for country data"""
+    
+    alpha_2: str
+    alpha_3: str
+    flag: str
+    name: str
+    numeric: str
+    official_name: Optional[str]
+
+class Language(BaseModel):
+    """class for language data"""
+    
+    character_order: Optional[str]
+    display_name: Optional[str]
+    english_name: Optional[str]
+    language: str
+    language_name: Optional[str]
+    population_percent: Optional[float]
+    official_status: Optional[str]
+
 class SignageData(BaseModel):
     """This is the signage data"""
     gate_destination: Optional[str]
@@ -201,12 +237,12 @@ class SignageData(BaseModel):
     estimated_out: Optional[datetime]
     destination_code_iata: Optional[str]
     origin_code_iata: Optional[str]
-    country_destination: Any
-    country_origin: Any
-    language_origin: Any
-    language_destination: Any
-    airport_origin: collections.OrderedDict
-    airport_destination: collections.OrderedDict
+    country_destination: Country
+    country_origin: Country
+    languages_origin: List[Language]
+    languages_destination: List[Language]
+    airport_origin: Airport
+    airport_destination: Airport
     
     @staticmethod
     def factory(arrivals_departures: Union[Arrivals, Departures]):
@@ -222,11 +258,11 @@ class SignageData(BaseModel):
         
         for scheduled_arrival_departure in scheduled_arrivals_departures:
 
-            airport_destination, country_destination, language_destination = SignageData.get_airport_country_language(
+            airport_destination, country_destination, languages_destination = SignageData.get_airport_country_language(
                 scheduled_arrival_departure.destination.get("code_iata")
                 )
 
-            airport_origin, country_origin, language_origin = SignageData.get_airport_country_language(
+            airport_origin, country_origin, languages_origin = SignageData.get_airport_country_language(
                 scheduled_arrival_departure.origin.get("code_iata")
                 )
 
@@ -241,8 +277,8 @@ class SignageData(BaseModel):
                 origin_code_iata = scheduled_arrival_departure.origin.get("code_iata"),
                 country_destination = country_destination,
                 country_origin = country_origin,
-                language_origin = language_origin,
-                language_destination = language_destination,
+                languages_origin = languages_origin,
+                languages_destination = languages_destination,
                 airport_origin = airport_origin,
                 airport_destination = airport_destination
             )
@@ -253,30 +289,82 @@ class SignageData(BaseModel):
     @staticmethod
     def get_airport_country_language(code_iata : str):
         """Gets the airport, country and lang from code"""
-        airport = airports[code_iata]
-        country = pycountry.countries.get(alpha_2 = airport["country"])
-        languages = babel.languages.get_territory_language_info(country.alpha_2)
-        language = babel.Locale.parse(list(languages)[0])
-        return airport, country.__dict__, language.__dict__
+        
+        airport_data = airports[code_iata]
+        country_data = pycountry.countries.get(alpha_2 = airport_data["country"])
+        languages_data = babel.languages.get_territory_language_info(country_data.alpha_2)
+        
+        airport = Airport(
+            iata = airport_data["iata"],
+            name = airport_data["name"],
+            city = airport_data["city"],
+            subd = airport_data["subd"],
+            country = airport_data["country"],
+            elevation = airport_data["elevation"],
+            lat = airport_data["lat"],
+            lon = airport_data["lon"],
+            tz = airport_data["tz"]
+        )
+        
+        country = Country(
+            alpha_2 = country_data.alpha_2,
+            alpha_3 = country_data.alpha_3,
+            flag = country_data.flag,
+            name = country_data.name,
+            numeric = country_data.numeric,
+            official_name = country_data.official_name if hasattr(country_data, "offical_name") else None
+        )
+    
+        languages = []
+        
+        for language, language_data in languages_data.items():
+            
+            try:
+                babel_language = babel.Locale.parse(language)
+            except:
+                pass
 
-    @staticmethod
-    def cache_signage_datas(signage_datas:list, arrivals_departures: str):
+            language_object = Language(
+                character_order = babel_language.character_order if babel_language else None,
+                display_name = babel_language.display_name if babel_language else None,
+                english_name = babel_language.english_name if babel_language else None,
+                language = babel_language.language if babel_language else None,
+                language_name = babel_language.language_name if babel_language else None,
+                population_percent = language_data["population_percent"],
+                official_status = language_data["official_status"]
+            )
+            languages.append(language_object)
+
+        return airport, country, languages
+
+
+class SignageDatas(BaseModel):
+    """A Model to hold data for multiple signs (and make json serialization easier)"""
+    
+    arrivals_departures: str
+    signage_datas: List[SignageData]
+
+    def cache(self):
         """Caching the signage data"""
         client.set(
-            f'signage:{arrivals_departures}',
-            json.dumps([json.loads(signage_data.json()) for signage_data in signage_datas])
+            f'signage:{self.arrivals_departures}',
+            self.json()
         )
-        return departures
-
 
 if __name__=="__main__":
 
     arrivals = Arrivals.cached_get()
     departures = Departures.cached_get()
-    arrivals_signage_datas = SignageData.factory(arrivals)
-    departures_signage_datas = SignageData.factory(departures)
-    SignageData.cache_signage_datas(arrivals_signage_datas, "arrivals")
-    SignageData.cache_signage_datas(departures_signage_datas, "departures")
+    arrivals_signage_datas = SignageDatas(
+        arrivals_departures = "arrivals",
+        signage_datas = SignageData.factory(arrivals)
+        )
+    departures_signage_datas = SignageDatas(
+        arrivals_departures = "departures",
+        signage_datas = SignageData.factory(departures)
+        )
+    arrivals_signage_datas.cache()
+    departures_signage_datas.cache()
     print("Done")
     breakpoint()
 
