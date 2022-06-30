@@ -43,15 +43,15 @@
                 id="nav-content">
                 <ul class="list-reset lg:flex justify-end flex-1 items-center">
                     <li class="mr-3">
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4" href="about.html">About</a>
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4" href="/about">About</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline"
-                            href="signage.html">Signage</a>
+                            href="/signage">Signage</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-                            href="planes.html">Planes</a>
+                            href="/planes">Planes</a>
                     </li>
                 </ul>
             </div>
@@ -72,40 +72,40 @@
                 
                 <div class="m-1 bg-gray-100 shadow">
                     <p class="p-2">
-                        Departing LHR
+                        Arrival Time
                     </p>
                 </div>
 
                 <div class="flex m-1 bg-gray-100 shadow">
-                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                    <div class="w-2/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Date
                         </p>
-                        <p>
+                        <p id="arrivalDate">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Time
                         </p>
-                        <p>
+                        <p id="arrivalTime">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-2/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Timezone
+                        </p>
+                        <p id="arrivalTZ">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Current Time
                         </p>
-                        <p>
-                            Line 2
-                        </p>
-                    </div>
-                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
-                        <p class="text-sm">
-                            Line 1
-                        </p>
-                        <p>
+                        <p id="arrivalCurrentTime">
                             Line 2
                         </p>
                     </div>
@@ -113,40 +113,40 @@
 
                 <div class="m-1 bg-gray-100 shadow">
                     <p class="p-2">
-                        Arrival SYD
+                        Departure Time
                     </p>
                 </div>
 
                 <div class="flex m-1 bg-gray-100 shadow">
-                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                    <div class="w-2/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Date
                         </p>
-                        <p>
+                        <p id="departureDate">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Time
                         </p>
-                        <p>
+                        <p id="departureTime">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-2/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Timezone
+                        </p>
+                        <p id="departureTZ">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Current Time
                         </p>
-                        <p>
-                            Line 2
-                        </p>
-                    </div>
-                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
-                        <p class="text-sm">
-                            Line 1
-                        </p>
-                        <p>
+                        <p id="departureCurrentTime">
                             Line 2
                         </p>
                     </div>
@@ -154,39 +154,80 @@
 
                 <div class="m-1 bg-gray-100 shadow">
                     <p class="p-2">
-                        Time of Arrival
+                        Location of Arrival
                     </p>
                 </div>
                 <div class="flex m-1 bg-gray-100 shadow">
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Terminal
                         </p>
-                        <p>
+                        <p id="terminal">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Gate
                         </p>
-                        <p>
+                        <p id="gate">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-2/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Airport
+                        </p>
+                        <p id="airport">
                             Line 2
                         </p>
                     </div>
                     <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            Country
                         </p>
-                        <p>
+                        <p id="country">
                             Line 2
                         </p>
                     </div>
-                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                </div>
+
+                <div class="m-1 bg-gray-100 shadow">
+                    <p class="p-2">
+                        Language
+                    </p>
+                </div>
+
+                <div class="flex m-1 bg-gray-100 shadow">
+                    <div class="w-1/5 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
                         <p class="text-sm">
-                            Line 1
+                            First Language
                         </p>
-                        <p>
+                        <p id="firstLang">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-1/5 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Second Language
+                        </p>
+                        <p id="secondLang">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-1/5 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Third Language
+                        </p>
+                        <p id="thirdLang">
+                            Line 2
+                        </p>
+                    </div>
+                    <div class="w-1/5 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-sm">
+                            Forth Language
+                        </p>
+                        <p id="fourthLang">
                             Line 2
                         </p>
                     </div>
@@ -248,7 +289,57 @@
         </div>
     </footer>
 
+    <script src="/static/js/api.js"></script>
+
     <script>
+        function renderSign(){
+            let arrival = getArrivals().signage_datas[0];
+            document.getElementById("arrivalTime").innerText = arrival.estimated_in? (new Date(arrival.estimated_in)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}):"Unknown";
+
+            document.getElementById("arrivalCurrentTime").innerText = (new Date()).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+
+            document.getElementById("arrivalTZ").innerText = arrival.estimated_in? (new Date(arrival.estimated_in).toTimeString().slice(9.17)):"Unknown";
+
+            document.getElementById("arrivalDate").innerText = arrival.estimated_in? String((new Date(arrival.estimated_in).getDate())) + "/" + String(new Date(arrival.estimated_in).getMonth() + 1) + "/" + (new Date(arrival.estimated_in).getFullYear()):"Unknown";
+
+
+            let departure = getArrivals().signage_datas[0];
+            document.getElementById("departureTime").innerText = arrival.estimated_out? (new Date(arrival.estimated_out)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}):"Unknown";
+
+            document.getElementById("departureCurrentTime").innerText = (new Date()).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+
+            document.getElementById("departureTZ").innerText = arrival.estimated_out? (new Date(arrival.estimated_out).toTimeString().slice(9.17)):"Unknown";
+
+            document.getElementById("departureDate").innerText = arrival.estimated_out? String((new Date(arrival.estimated_out).getDate())) + "/" + String(new Date(arrival.estimated_out).getMonth() + 1) + "/" + (new Date(arrival.estimated_out).getFullYear()):"Unknown";
+
+
+            let location = getArrivals().signage_datas[0];
+
+            document.getElementById("terminal").innerText = location.terminal_destination? location.terminal_destination: "Unknown";
+
+            document.getElementById("gate").innerText = location.gate_destination? location.gate_destination: "Unknown";
+            
+            document.getElementById("airport").innerText = location.airport_destination.name? location.airport_destination.name: "Unknown";
+
+            document.getElementById("country").innerText = location.airport_destination.subd? location.airport_destination.subd: "Unknown";
+
+            let language = getArrivals().signage_datas[0];
+
+            document.getElementById("firstLang").innerText = language.languages_origin[0] && language.languages_origin[0].english_name? language.languages_origin[0].english_name: "Unknown";
+
+            document.getElementById("secondLang").innerText = language.languages_origin[1] && language.languages_origin[1].english_name? language.languages_origin[1].english_name: "Unknown";
+
+            document.getElementById("thirdLang").innerText = language.languages_origin[2] && language.languages_origin[2].english_name? language.languages_origin[2].english_name: "Unknown";
+
+            document.getElementById("fourthLang").innerText = language.languages_origin[3] && language.languages_origin[3].english_name? language.languages_origin[3].english_name: "Unknown";
+        }
+        renderSign();
+    </script>
+
+    <script>
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
         /* Progress bar */
         //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
         var h = document.documentElement,

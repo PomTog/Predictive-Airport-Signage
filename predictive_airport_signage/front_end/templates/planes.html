@@ -43,15 +43,15 @@
                 id="nav-content">
                 <ul class="list-reset lg:flex justify-end flex-1 items-center">
                     <li class="mr-3">
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4" href="about.html">About</a>
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4" href="/about">About</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-                            href="signage.html">Signage</a>
+                            href="/signage">Signage</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline"
-                            href="planes.html">Planes</a>
+                            href="/planes">Planes</a>
                     </li>
                 </ul>
             </div>
@@ -67,13 +67,16 @@
             <div class="font-sans">
                 <h1 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-2 text-3xl md:text-4xl">The Airport Signage project</h1>
             </div>
+            
+            <div class="m-1 bg-gray-100 shadow">
+                <p class="p-2">
+                    Planes
+                </p>
+            </div>
+            
+            <div id="planes-holder">
 
-            <p class="py-6">
-                The planes will go here
-            </p>
-
-
-        </div>
+            </div>
 
         <!--Divider-->
         <hr class="border-b-2 border-gray-400 mb-8 mx-4">
@@ -126,7 +129,72 @@
         </div>
     </footer>
 
+    <script src="/static/js/api.js"></script>
+
     <script>
+        function renderPlanes(){
+            let arrivals = getArrivals();
+            let planesHolder = document.getElementById("planes-holder");
+            for (let arrival of arrivals.signage_datas){
+                let plane = document.createElement("div");
+                let innerHtml = `<div class="flex m-1 bg-gray-100 shadow">
+                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-xs">
+                            Time of arrival
+                        </p>
+                        <p class="text-sm">
+                            ${(new Date(arrival.estimated_in)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}
+                        </p>
+                    </div>
+
+                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-xs">
+                            Time of departure
+                        </p>
+                        <p class="text-sm">
+                            ${(new Date(arrival.estimated_out)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}
+                        </p>
+                    </div>
+
+                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-xs">
+                            Origin
+                        </p>
+                        <p class="text-sm">
+                            ${arrival.country_origin.name}
+                        </p>
+                    </div>
+
+                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-xs">
+                            Destination
+                        </p>
+                        <p class="text-sm">
+                            ${arrival.country_destination.name}
+                        </p>
+                    </div>
+
+                    <div class="w-1/6 border-l-2 bg-gray-200 border-indigo-500 m-2 p-2">
+                        <p class="text-xs">
+                            Language
+                        </p>
+                        <p class="text-sm">
+                            ${arrival.languages_origin[0].english_name}
+                        </p>
+                    </div>
+                </div>`
+                plane.innerHTML = innerHtml;
+                planesHolder.appendChild(plane);
+            }
+
+        }
+        renderPlanes();
+    </script>
+
+    <script>
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
         /* Progress bar */
         //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
         var h = document.documentElement,
@@ -161,7 +229,7 @@
 
             }
 
-        });
+        })
 
 
         //Javascript to toggle the menu

@@ -43,15 +43,15 @@
                 id="nav-content">
                 <ul class="list-reset lg:flex justify-end flex-1 items-center">
                     <li class="mr-3">
-                        <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="about.html">About</a>
+                        <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="/about">About</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-                            href="signage.html">Signage</a>
+                            href="/signage">Signage</a>
                     </li>
                     <li class="mr-3">
                         <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
-                            href="planes.html">Planes</a>
+                            href="/planes">Planes</a>
                     </li>
                 </ul>
             </div>
@@ -328,6 +328,9 @@
     </footer>
 
     <script>
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
         /* Progress bar */
         //Source: https://alligator.io/js/progress-bar-javascript-css-variables/
         var h = document.documentElement,

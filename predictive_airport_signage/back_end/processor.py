@@ -42,8 +42,8 @@ class Arrival(BaseModel):
     diverted: bool
     cancelled: bool
     position_only: bool
-    origin: Dict[str, Optional[str]]
-    destination: Dict[str, Optional[str]]
+    origin: Optional[Dict[str, Optional[str]]]
+    destination: Optional[Dict[str, Optional[str]]]
     departure_delay: Optional[int]
     arrival_delay: Optional[int]
     filed_ete: Optional[int]
@@ -95,8 +95,8 @@ class Departure(BaseModel):
     diverted: bool
     cancelled: bool 
     position_only: bool
-    origin: Dict[str, Optional[str]]
-    destination: Dict[str, Optional[str]]
+    origin: Optional[Dict[str, Optional[str]]]
+    destination: Optional[Dict[str, Optional[str]]]
     departure_delay: Optional[int]
     arrival_delay:Optional[int]
     filed_ete: Optional[int]
@@ -222,7 +222,7 @@ class Language(BaseModel):
     character_order: Optional[str]
     display_name: Optional[str]
     english_name: Optional[str]
-    language: str
+    language: Optional[str]
     language_name: Optional[str]
     population_percent: Optional[float]
     official_status: Optional[str]
@@ -257,6 +257,9 @@ class SignageData(BaseModel):
             scheduled_arrivals_departures = arrivals_departures.scheduled_departures
         
         for scheduled_arrival_departure in scheduled_arrivals_departures:
+            
+            if not scheduled_arrival_departure.destination or not scheduled_arrival_departure.origin:
+                continue
 
             airport_destination, country_destination, languages_destination = SignageData.get_airport_country_language(
                 scheduled_arrival_departure.destination.get("code_iata")
@@ -318,7 +321,7 @@ class SignageData(BaseModel):
         languages = []
         
         for language, language_data in languages_data.items():
-            
+            babel_language = None
             try:
                 babel_language = babel.Locale.parse(language)
             except:
@@ -374,6 +377,5 @@ if __name__=="__main__":
     arrivals_signage_datas.cache()
     departures_signage_datas.cache()
     print("Done")
-    breakpoint()
 
 
