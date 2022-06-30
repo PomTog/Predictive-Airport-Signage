@@ -4,4 +4,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD python -u ./front_end/app.py
+CMD python -u ./main.py
