@@ -1,8 +1,7 @@
 FROM python:3
 
-COPY . /app
-WORKDIR /app
+COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD python -u ./processor.py
+CMD python -u ./back_end/processor.py

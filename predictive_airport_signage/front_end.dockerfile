@@ -1,8 +1,7 @@
 FROM python:3
 
-COPY . /app
-WORKDIR /app
+COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD python -u ./app.py
+CMD python -u ./front_end/app.py

@@ -142,7 +142,7 @@ class Arrivals(BaseModel):
         response = requests.get(
             f"https://aeroapi.flightaware.com/aeroapi/airports/{id}/flights/scheduled_arrivals",
             headers={
-                "x-apikey":os.getenv('AERO_API_KEY'),
+                "x-apikey":os.environ["AERO_API_KEY"],
             }
         )
         return Arrivals(**response.json())
@@ -174,7 +174,7 @@ class Departures(BaseModel):
         response = requests.get(
             f"https://aeroapi.flightaware.com/aeroapi/airports/{id}/flights/scheduled_departures",
             headers={
-                "x-apikey":os.getenv('AERO_API_KEY'),
+                "x-apikey":os.environ["AERO_API_KEY"],
             }
         )
         return Departures(**response.json())
@@ -378,5 +378,5 @@ if __name__=="__main__":
         arrivals_signage_datas.cache()
         departures_signage_datas.cache()
 
-        print(f"Arrivals and Departures refreshed. Waiting {os.getenv('REFRESH_TIME')} seconds")
-        time.sleep(int(os.getenv('REFRESH_TIME')))
+        print(f"Arrivals and Departures refreshed. Waiting {os.environ['REFRESH_TIME']} seconds")
+        time.sleep(int(os.environ['REFRESH_TIME']))
