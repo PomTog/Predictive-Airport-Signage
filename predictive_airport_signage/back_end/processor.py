@@ -377,5 +377,3 @@ if __name__=="__main__":
     arrivals_signage_datas.cache()
     departures_signage_datas.cache()
     print("Done")
-
-
