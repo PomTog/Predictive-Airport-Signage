@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+    
+  predictive-airport-signage-frontend:
+    build: 
+      context: ./front_end
+      dockerfile: Dockerfile
+    container_name: predictive-airport-signage-frontend
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      - AERO_API_KEY=hAUtREfKvazvRdYJu7NwAEpCklCkUvxt
+      - REFRESH_TIME=1800
+      - REDIS_HOST=redis
+
+  predictive-airport-signage-backend:
+    build: 
+      context: ./back_end
+      dockerfile: Dockerfile
+    container_name: predictive-airport-signage-backend
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+  
+  redis: 
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+  
+  redis-commander:
+    image: rediscommander/redis-commander
+    container_name: redis-commander
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - REDIS_HOSTS=redis
+
+
+

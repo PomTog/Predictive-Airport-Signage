@@ -1,0 +1,6 @@
+pydantic
+requests
+redis
+airportsdata
+pycountry
+babel
