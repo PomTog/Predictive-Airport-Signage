@@ -1,10 +1,7 @@
-import sys,os
-sys.path.append(os.getcwd())
 from flask import Flask, jsonify, render_template
-from predictive_airport_signage.back_end.processor import SignageDatas
+from back_end.processor import SignageDatas
 
 app = Flask(__name__)
-app.debug=True
 
 @app.route("/api/arrivals")
 def arrivals():
