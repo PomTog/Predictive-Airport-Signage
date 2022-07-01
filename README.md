@@ -159,7 +159,7 @@ The processor, cache and API/Web Page will be deployed in docker containers, in 
 
 ## Build
 ```
-docker-compose build --no-cache
+docker-compose -p "predictive-airport-signage" up -d --build
 docker-compose -p "predictive-airport-signage" up -d
 ```
 ## Frontend
