@@ -143,7 +143,7 @@
                             Time of arrival
                         </p>
                         <p class="text-sm">
-                            ${(new Date(arrival.estimated_in)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}
+                            ${arrival.estimated_in? (new Date(arrival.estimated_in)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}): "Unknown"}
                         </p>
                     </div>
 
@@ -152,7 +152,7 @@
                             Time of departure
                         </p>
                         <p class="text-sm">
-                            ${(new Date(arrival.estimated_out)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}
+                            ${arrival.estimated_in? (new Date(arrival.estimated_out)).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}): "Unknown"}
                         </p>
                     </div>
 
@@ -161,7 +161,7 @@
                             Origin
                         </p>
                         <p class="text-sm">
-                            ${arrival.country_origin.name}
+                            ${arrival.estimated_in?(arrival.country_origin.name):"Unknown"}
                         </p>
                     </div>
 
@@ -170,7 +170,7 @@
                             Destination
                         </p>
                         <p class="text-sm">
-                            ${arrival.country_destination.name}
+                            ${arrival.estimated_in?(arrival.country_destination.name):"Uknown"}
                         </p>
                     </div>
 
@@ -179,7 +179,7 @@
                             Language
                         </p>
                         <p class="text-sm">
-                            ${arrival.languages_origin[0].english_name}
+                            ${arrival.estimated_in?(arrival.languages_origin[0].english_name):"Unknown"}
                         </p>
                     </div>
                 </div>`
