@@ -3,8 +3,7 @@ To create a table of the time of
 arrival and determine what language to 
 display by pulling from the API.
 """
-from itertools import count
-from unicodedata import numeric
+from operator import truediv
 from pydantic import BaseModel, validate_arguments
 from typing import List, Dict, Optional, Any, Union
 from datetime import datetime
@@ -13,11 +12,12 @@ import redis
 import json
 import airportsdata
 import pycountry
-import collections
 import babel
 import babel.languages
+import time
+import os
 
-client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+client = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=6379, db=0, decode_responses=True)
 
 
 id="LHR"
@@ -142,16 +142,16 @@ class Arrivals(BaseModel):
         response = requests.get(
             f"https://aeroapi.flightaware.com/aeroapi/airports/{id}/flights/scheduled_arrivals",
             headers={
-                "x-apikey":"hAUtREfKvazvRdYJu7NwAEpCklCkUvxt",
+                "x-apikey":os.environ["AERO_API_KEY"],
             }
         )
         return Arrivals(**response.json())
 
     @staticmethod
-    def cached_get():
+    def cached_get(force_refresh = False):
         """cached request"""
         data = client.get('processor:api:arrivals')
-        if data: 
+        if data and not force_refresh: 
             return Arrivals(**json.loads(data))
         
         arrivals = Arrivals.get()
@@ -174,16 +174,16 @@ class Departures(BaseModel):
         response = requests.get(
             f"https://aeroapi.flightaware.com/aeroapi/airports/{id}/flights/scheduled_departures",
             headers={
-                "x-apikey":"hAUtREfKvazvRdYJu7NwAEpCklCkUvxt",
+                "x-apikey":os.environ["AERO_API_KEY"],
             }
         )
         return Departures(**response.json())
     
     @staticmethod
-    def cached_get():
+    def cached_get(force_refresh = False):
         """cached request"""
         data = client.get('processor:api:departures')
-        if data: 
+        if data and not force_refresh: 
             return Departures(**json.loads(data))
         
         departures = Departures.get()
@@ -363,17 +363,20 @@ class SignageDatas(BaseModel):
         return SignageDatas(**json.loads(data))
 
 if __name__=="__main__":
+    while True:
 
-    arrivals = Arrivals.cached_get()
-    departures = Departures.cached_get()
-    arrivals_signage_datas = SignageDatas(
-        arrivals_departures = "arrivals",
-        signage_datas = SignageData.factory(arrivals)
-        )
-    departures_signage_datas = SignageDatas(
-        arrivals_departures = "departures",
-        signage_datas = SignageData.factory(departures)
-        )
-    arrivals_signage_datas.cache()
-    departures_signage_datas.cache()
-    print("Done")
+        arrivals = Arrivals.cached_get(force_refresh=True)
+        departures = Departures.cached_get(force_refresh=True)
+        arrivals_signage_datas = SignageDatas(
+            arrivals_departures = "arrivals",
+            signage_datas = SignageData.factory(arrivals)
+            )
+        departures_signage_datas = SignageDatas(
+            arrivals_departures = "departures",
+            signage_datas = SignageData.factory(departures)
+            )
+        arrivals_signage_datas.cache()
+        departures_signage_datas.cache()
+
+        print(f"Arrivals and Departures refreshed. Waiting {os.environ['REFRESH_TIME']} seconds")
+        time.sleep(int(os.environ['REFRESH_TIME']))
